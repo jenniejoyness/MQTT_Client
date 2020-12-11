@@ -1,3 +1,9 @@
+'''
+Program: MQTT_Client
+Date: 12.12.20
+Developer: Jennie Klein
+'''
+
 import paho.mqtt.client as mqtt
 import socket
 
@@ -18,14 +24,13 @@ def on_connect(client, userdata, flags, rc):
         print("Connected to broker")
 
     else:
-        print("Connection failed - returned code = ", rc)
+        print("Connection failed - return code = ", rc)
+        exit(1)
 
 
 '''
 The callback for when a PUBLISH message is received from the server.
 '''
-
-
 def on_message(client, userdata, msg):
     if msg.topic == "input_data":
         output = flip_bits(msg.payload)
@@ -35,28 +40,17 @@ def on_message(client, userdata, msg):
         print "published data: " + str(msg.payload)
 
 
-def on_publish(client, userdata, result):
-    print("data published \n")
-
-
-# TODO - ?? how to define funtion
-
-'''  
 '''
-
-
-def on_disconnect(client):
-    # look up online
-    # client.loop_stop()
-    client.disconnect()
+Testing that data was published
+'''
+def on_publish(client, userdata, result):
+    print("data published")
 
 
 """
 Flip all odd bits if msb is '1'
 Flip all even bits if msb is '0'
 """
-
-
 def flip_bits(input_data):
     num = int(input_data, 0)
     first_bit_lit = 1 << ((num_bytes * byte_size) - 1)
@@ -71,12 +65,9 @@ def flip_bits(input_data):
     return input_data + "_" + hex(flipped)
 
 
-#
 '''
 Initialize client and set callback functions
 '''
-
-
 def init_client():
     # create new instance
     new_client = mqtt.Client()
@@ -85,8 +76,9 @@ def init_client():
     new_client.on_connect = on_connect
     new_client.on_message = on_message
     new_client.on_publish = on_publish
-    new_client.on_disconnect = on_disconnect
+
     return new_client
+
 
 '''
 The client subscribes to every topic in the list_of_sub
@@ -111,6 +103,4 @@ if __name__ == "__main__":
     try:
         client.loop_forever()
     except KeyboardInterrupt:
-        # TODO
-        # on_disconnect(client)
         exit(0)
