@@ -14,6 +14,7 @@ num_bytes = 4
 odd_bits = 0xAAAAAAAA
 even_bits = 0x55555555
 byte_size = 8
+port = 1883
 
 
 '''
@@ -38,13 +39,6 @@ def on_message(client, userdata, msg):
     # for testing purposes
     if msg.topic == "output_data" or msg.topic == "hostname":
         print "published data: " + str(msg.payload)
-
-
-'''
-Testing that data was published
-'''
-def on_publish(client, userdata, result):
-    print("data published")
 
 
 """
@@ -75,7 +69,6 @@ def init_client():
     # callback functions
     new_client.on_connect = on_connect
     new_client.on_message = on_message
-    new_client.on_publish = on_publish
 
     return new_client
 
@@ -92,7 +85,7 @@ if __name__ == "__main__":
 
     # initialize client and connect
     client = init_client()
-    client.connect(broker_address, 1883, 60)
+    client.connect(broker_address, port)
     # get hostname and publish
     hostname = socket.gethostname()
     client.publish("hostname", hostname)
