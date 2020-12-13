@@ -6,10 +6,10 @@ Developer: Jennie Klein
 
 import paho.mqtt.client as mqtt
 import socket
-
+from private import password
 broker_address = "3.121.41.63"
 username = "client1"
-password = "0G*XXzzZu_ICwqBf~BQWkwsl"
+
 num_bytes = 4
 odd_bits = 0xAAAAAAAA
 even_bits = 0x55555555
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     hostname = socket.gethostname()
     client.publish("hostname", hostname)
     # client subscribes to all topics in the list
-    topics = ["input_data"]
+    topics = ["input_data","output_data"]
     subscriptions(client, topics)
     # listening to servers publications until there is an interrupt
     try:
