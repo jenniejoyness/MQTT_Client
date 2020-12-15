@@ -1,20 +1,21 @@
 '''
 Program: MQTT_Client
-Date: 12.12.20
+Date: 13.12.20
 Developer: Jennie Klein
 '''
 
 import paho.mqtt.client as mqtt
 import socket
-from private import password
+from private import username, password
+
 broker_address = "3.121.41.63"
-username = "client1"
+port = 1883
 
 num_bytes = 4
 odd_bits = 0xAAAAAAAA
 even_bits = 0x55555555
 byte_size = 8
-port = 1883
+
 
 
 '''
@@ -38,7 +39,7 @@ def on_message(client, userdata, msg):
         client.publish("output_data", output)
     # for testing purposes
     if msg.topic == "output_data" or msg.topic == "hostname":
-        print "published data: " + str(msg.payload)
+        print msg.topic + ": " + str(msg.payload)
 
 
 """
